@@ -1,10 +1,10 @@
 exec ./usolve.sci
 exec ./lsolve.sci
 
-A = rand(10,10);
+A = rand(30,30) + ones(30,30);
 U = triu(A);
 L = tril(A);
-b = rand(10,1);
+b = rand(30,1) + ones(30,1);
 
 l = lsolve(L,b);
 u = usolve(U,b);
@@ -23,6 +23,8 @@ disp("erreur avant")
 disp(err_avantu)
 disp("erreur arriere")
 disp(err_arriereu)
+disp("conditionnement")
+disp(cond(U))
 
 disp("l = ");
 disp(l);
@@ -35,3 +37,6 @@ disp("erreur avant")
 disp(err_avantu)
 disp("erreur arriere")
 disp(err_arriereu)
+disp("conditionnement")
+disp(cond(L))
+
