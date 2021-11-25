@@ -36,3 +36,18 @@ err_arriere = norm(b-A*x)/(norm(A)*norm(x))
 
 disp(err_avant)
 disp(err_arriere)
+
+/*execution trop longue
+A = rand(10000,10000)
+xex = rand(10000,1)
+
+b = A * xex
+
+x = A\b
+
+err_avant = norm(xex - x)/norm(xex)
+err_arriere = norm(b-A*x)/(norm(A)*norm(x))
+
+disp(err_avant)
+disp(err_arriere)
+*/
