@@ -1,52 +1,31 @@
-A = rand(3,3)
-xex = rand(3,1)
+iter = 20;
 
-b = A * xex
+[fic, mod] = mopen("exercice7.dat", "w");
 
-x = A\b
+for t = 10: 100 : 1010
+    
+    err_avant = 0;
+    err_arriere = 0;
+    cond7 = 0;
 
-err_avant = norm(xex - x)/norm(xex)
-err_arriere = norm(b-A*x)/(norm(A)*norm(x))
+    disp(string(t)+"/"+string(1010));
+    for i = 1 : iter
 
-disp(err_avant)
-disp(err_arriere)
+        A = rand(t,t) + ones(t,t);
+        xex = rand(t,1) + ones(t,1);
+    
+        b = A * xex;
 
-A = rand(100,100)
-xex = rand(100,1)
+        x = A\b;
 
-b = A * xex
+        err_avant = err_avant + norm(xex - x)/norm(xex);
+        err_arriere = err_arriere + norm(b-A*x)/(norm(A)*norm(x));
+        cond7 = cond7 + cond(A);
 
-x = A\b
+    end
 
-err_avant = norm(xex - x)/norm(xex)
-err_arriere = norm(b-A*x)/(norm(A)*norm(x))
+    mfprintf(fic, "%.17lf %.17lf %.17lf %d\n", err_avant/iter, err_arriere/iter, cond7/iter, t);
 
-disp(err_avant)
-disp(err_arriere)
+end
 
-A = rand(1000,1000)
-xex = rand(1000,1)
-
-b = A * xex
-
-x = A\b
-
-err_avant = norm(xex - x)/norm(xex)
-err_arriere = norm(b-A*x)/(norm(A)*norm(x))
-
-disp(err_avant)
-disp(err_arriere)
-
-//execution trop longue
-// = rand(10000,10000)
-//xex = rand(10000,1)
-
-//b = A * xex
-
-//x = A\b
-
-//err_avant = norm(xex - x)/norm(xex)
-//err_arriere = norm(b-A*x)/(norm(A)*norm(x))
-
-//disp(err_avant)
-//disp(err_arriere)
+mclose(fic);
