@@ -1,71 +1,46 @@
 exec matmat3b.sci
 exec matmat2b.sci
 exec matmat1b.sci
-i = 10;
+iter = 50;
 
-A = rand(i,i);
-B = rand(i,i);
+[fic1, mod1] = mopen("matmat3b.dat", "w");
+[fic2, mod2] = mopen("matmat2b.dat", "w");
+[fic3, mod3] = mopen("matmat1b.dat", "w");
 
-tic();
-C = matmat3b(A,B);
-temps = toc();
-disp("temps matmat3b = ");
-disp(temps);
+for t = 10 : 10 : 100
 
-tic();
-C = matmat2b(A,B);
-temps = toc();
-disp("temps matmat2b = ");
-disp(temps);
+    temps1 = 0;
+    temps2 = 0;
+    temps3 = 0;
 
-tic();
-C = matmat1b(A,B);
-temps = toc();
-disp("temps matmat1b = ");
-disp(temps);
+    disp(string(t)+"/"+string(100));
+    for i = 1 : iter
 
-i = 100;
+        A = rand(t,t) + ones(t,t);
+        B = rand(t,t) + ones(t,t);
 
-A = rand(i,i);
-B = rand(i,i);
+        tic()
+        C = matmat3b(A,B);
+        temps1 = temps1 + toc();
 
-tic();
-C = matmat3b(A,B);
-temps = toc();
-disp("temps matmat3b = ");
-disp(temps);
+        tic()
+        D = matmat2b(A,B);
+        temps2 = temps2 + toc();
 
-tic();
-C = matmat2b(A,B);
-temps = toc();
-disp("temps matmat2b = ");
-disp(temps);
+        tic()
+        E = matmat1b(A,B);
+        temps3 = temps3 + toc();
 
-tic();
-C = matmat1b(A,B);
-temps = toc();
-disp("temps matmat1b = ");
-disp(temps);
+    end
+    
+    mfprintf(fic1, "%.17lf %d\n", temps1/iter, t);
 
-i = 1000;
+    mfprintf(fic2, "%.17lf %d\n", temps2/iter, t);
 
-A = rand(i,i);
-B = rand(i,i);
+    mfprintf(fic3, "%.17lf %d\n", temps3/iter, t);
 
-tic();
-C = matmat3b(A,B);
-temps = toc();
-disp("temps matmat3b = ");
-disp(temps);
+end
 
-tic()
-C = matmat2b(A,B);
-temps = toc();
-disp("temps matmat2b = ");
-disp(temps);
-
-tic();
-C = matmat1b(A,B);
-temps = toc();
-disp("temps matmat1b = ");
-disp(temps);
+mclose(fic1);
+mclose(fic2);
+mclose(fic3);
