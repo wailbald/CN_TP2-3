@@ -2,29 +2,40 @@ exec ./mylu3b.sci
 exec ./mylu1b.sci
 exec ./mylu.sci
 
-A = rand(5,5) + ones(5,5);
+[fic1, mod1] = mopen("mylu3b.dat", "w");
+[fic2, mod2] = mopen("mylu1b.dat", "w");
 
-[L,U] = mylu3b(A);
+taille = 100
+iter = 5;
 
-var = norm(A - L*U)
+for t = 1 : taille
+    err1 = 0;
+    temps1 = 0;
 
-disp("erreur 3b");
-disp(var);
+    err2 = 0;
+    temps2 = 0;
 
-[L2,U2] = mylu1b(A);
+    disp(string(t)+"/"+string(taille))
+    for i = 1 : iter
 
-var2 = norm(A - L2*U2)
+        A = rand(taille,taille) + ones(taille,taille);
 
-disp("erreur 1b");
-disp(var2);
+        tic()
+        [L,U] = mylu3b(A);
+        temps1 = temps1 + toc();
+        err1 = err1 + norm(A - L*U);
 
-[L,U,P] = mylu(A);
-[L2,U2,P2] = lu(A);
+        tic()
+        [L2,U2] = mylu1b(A);
+        temps2 = temps2 + toc();
+        err2 = err2 + norm(A - L2*U2);
 
-disp("erreur");
-disp(L)
-disp(L2)
-disp(U)
-disp(U2)
-disp(P)
-disp(P2)
+    end
+
+    mfprintf(fic1, "%.17lf %.17lf %d\n", err1/iter, temps1/iter, t);
+    mfprintf(fic2, "%.17lf %.17lf %d\n", err2/iter, temps2/iter, t);
+
+end
+
+mclose(fic1);
+mclose(fic2);
